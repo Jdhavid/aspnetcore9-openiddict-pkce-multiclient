@@ -1,0 +1,43 @@
+# === .NET / ASP.NET Core ===
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+*.swp
+
+# Visual Studio files
+.vs/
+
+# Dotnet watch
+**/tmp/
+
+# Secretos de usuario (dotnet user-secrets)
+**/secrets.json
+
+# === Node / Angular ===
+node_modules/
+dist/
+tmp/
+out-tsc/
+.angular/
+package-lock.json
+npm-debug.log
+yarn-error.log
+.env
+.env.*.local
+
+# === Sistema / IDE ===
+.DS_Store
+Thumbs.db
+*.log
+
+# === Git ===
+*.orig
+
+# === Otros ===
+coverage/
+.idea/
+*.iml
