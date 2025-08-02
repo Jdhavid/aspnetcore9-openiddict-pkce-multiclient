@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddictWebServer.Data;
 
@@ -7,6 +8,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+//Agregar el servicio de Identity y a la aplicacion
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+        options.SignIn.RequireConfirmedAccount = false
+).AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -21,8 +27,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
+//Se agrega el middleware de la autenticación
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
