@@ -8,8 +8,6 @@
 
 <form asp-controller="Account" asp-action="Register" method="post" class="mx-auto row g-3 w-50" role="form" autocomplete="off">
     <h1 class="text-primary">@ViewData["Title"]</h1>
-    @*     <div class="text-danger" asp-validation-summary="All"></div> *@
-
     <div class="col-md-6">
         <label asp-for="FirstName" class="form-label"></label>
         <input asp-for="FirstName" class="form-control" />
