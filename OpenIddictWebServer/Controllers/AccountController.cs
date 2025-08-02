@@ -69,11 +69,17 @@ namespace OpenIddictWebServer.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(lViewModel.Email, lViewModel.Password, lViewModel.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(lViewModel.Email, lViewModel.Password, lViewModel.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     return Redirect(returnUrl);
                 }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return View("Lockout");
+                }
+
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
 
             }

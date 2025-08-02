@@ -13,20 +13,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 //Agregar el servicio de Identity y a la aplicacion
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-        options.SignIn.RequireConfirmedAccount = false
-).AddEntityFrameworkStores<ApplicationDbContext>();
-
-
-// Configuracion de identity
-builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
-    options.Password.RequiredLength = 4;
-    options.Lockout.MaxFailedAccessAttempts = 5;
-});
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Lockout.MaxFailedAccessAttempts = 1;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+}).AddEntityFrameworkStores<ApplicationDbContext>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
