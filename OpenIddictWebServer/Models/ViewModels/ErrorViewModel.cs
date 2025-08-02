@@ -1,4 +1,4 @@
-namespace OpenIddictWebServer.Models
+namespace OpenIddictWebServer.Models.ViewModels
 {
     public class ErrorViewModel
     {

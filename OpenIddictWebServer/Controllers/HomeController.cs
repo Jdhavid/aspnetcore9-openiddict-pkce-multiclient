@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using OpenIddictWebServer.Models;
+using OpenIddictWebServer.Models.ViewModels;
 
 namespace OpenIddictWebServer.Controllers
 {
