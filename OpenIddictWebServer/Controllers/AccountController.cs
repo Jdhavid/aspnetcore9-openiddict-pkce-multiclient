@@ -34,6 +34,7 @@ namespace OpenIddictWebServer.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel rViewModel)
         {
             if (ModelState.IsValid)
@@ -63,6 +64,7 @@ namespace OpenIddictWebServer.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel lViewModel)
         {
 
@@ -77,6 +79,15 @@ namespace OpenIddictWebServer.Controllers
 
             }
             return View(lViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
 
