@@ -1,6 +1,8 @@
+using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddictWebServer.Data;
+using OpenIddictWebServer.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddMapster();
+
+MapsterConfig.RegisterMappings();
 
 var app = builder.Build();
 

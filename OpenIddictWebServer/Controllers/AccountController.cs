@@ -1,24 +1,66 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MapsterMapper;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using OpenIddictWebServer.Models;
 using OpenIddictWebServer.Models.ViewModels;
 
 namespace OpenIddictWebServer.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IMapper _mapper;
+        private readonly ILogger<AccountController> _logger;
+
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper, ILogger<AccountController> logger)
+        {
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register(string returnUrl = null)
+        public async Task<IActionResult> Register()
         {
             var registerViewModel = new RegisterViewModel();
-
-            ViewData["ReturnUrl"] = returnUrl;
             return View(registerViewModel);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel rViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _mapper.Map<UserModel>(rViewModel);
 
+                var result = await _userManager.CreateAsync(user, rViewModel.Password);
+
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+
+                ValidateErrors(result);
+            }
+
+            return View(rViewModel);
+
+        }
+
+        private void ValidateErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
     }
 }

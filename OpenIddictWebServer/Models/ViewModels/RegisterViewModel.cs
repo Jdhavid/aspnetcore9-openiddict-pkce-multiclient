@@ -8,7 +8,7 @@ namespace OpenIddictWebServer.Models.ViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Email is required.")]
+        [Required(ErrorMessage = "First is required.")]
         [Display(Name = "First name")]
         public string FirstName { get; set; }
 
@@ -18,10 +18,10 @@ namespace OpenIddictWebServer.Models.ViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Passwor confirmation is required.")]
+        [Required(ErrorMessage = "Confirm password is required.")]
         [Compare("Password", ErrorMessage = "The passwords do not match")]
         [DataType(DataType.Password)]
-        [Display(Name = "Confirmation password")]
+        [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; }
 
     }
