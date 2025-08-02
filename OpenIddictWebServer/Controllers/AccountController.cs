@@ -27,15 +27,15 @@ namespace OpenIddictWebServer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Register()
+        public async Task<IActionResult> Register(string? returnUrl = null)
         {
-            var registerViewModel = new RegisterViewModel();
-            return View(registerViewModel);
+            ViewData["ReturnUrl"] = returnUrl ?? Url.Content("~/");
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel rViewModel)
+        public async Task<IActionResult> Register(RegisterViewModel rViewModel, string? returnUrl = null)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace OpenIddictWebServer.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
+                    return Redirect(returnUrl);
                 }
 
                 ValidateErrors(result);
@@ -67,15 +67,11 @@ namespace OpenIddictWebServer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel lViewModel, string? returnUrl = null)
         {
-
-            ViewData["ReturnUrl"] = returnUrl;
-
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(lViewModel.Email, lViewModel.Password, lViewModel.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    //return RedirectToAction("Index", "Home");
                     return Redirect(returnUrl);
                 }
                 ModelState.AddModelError(string.Empty, "Invalid login attempt.");
