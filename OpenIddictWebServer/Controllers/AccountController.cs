@@ -55,6 +55,31 @@ namespace OpenIddictWebServer.Controllers
 
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Login()
+        {
+            var loginViewModel = new LoginViewModel();
+            return View(loginViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel lViewModel)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(lViewModel.Email, lViewModel.Password, lViewModel.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+
+            }
+            return View(lViewModel);
+        }
+
+
         private void ValidateErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
